@@ -1,6 +1,6 @@
-const firstNumber = 0;
-const secondNumber = 0;
-const operator = "+";
+let firstNumber = 0;
+let secondNumber = 0;
+let operator = "+";
 
 function add(a, b) {
   return a + b;
@@ -26,6 +26,10 @@ function operate(op, num1, num2) {
   } else if (op === "*") {
     return multiply(num1, num2);
   } else if (op === "/") {
+    if (!num2) {
+      return "Cannot divide by zero";
+    }
+
     return divide(num1, num2);
   } else {
     return "Invalid operator!";
@@ -35,6 +39,8 @@ function operate(op, num1, num2) {
 const display = document.querySelector(".display");
 
 const keyList = document.querySelectorAll(".number");
+const operatorList = document.querySelectorAll(".operator");
+
 keyList.forEach((numberButton) => {
   numberButton.addEventListener("click", (e) => {
     if (display.textContent.trim() === "0") {
@@ -43,4 +49,19 @@ keyList.forEach((numberButton) => {
 
     display.textContent += e.target.textContent;
   });
+});
+
+operatorList.forEach((operatorButton) => {
+  operatorButton.addEventListener("click", (e) => {
+    operator = e.target.textContent;
+    firstNumber = Number(display.textContent);
+    display.textContent = "";
+  });
+});
+
+const equal = document.querySelector(".equal");
+equal.addEventListener("click", () => {
+  secondNumber = Number(display.textContent);
+
+  display.textContent = operate(operator, firstNumber, secondNumber);
 });
