@@ -66,7 +66,7 @@ operatorList.forEach((operatorButton) => {
   operatorButton.addEventListener("click", (e) => {
     const anotherOperator = e.target.textContent;
 
-    if (firstNumber && operator) {
+    if (operator && display.textContent.trim() !== "") {
       secondNumber = Number(display.textContent);
       display.textContent = operate(operator, firstNumber, secondNumber);
 
