@@ -38,6 +38,13 @@ function operate(op, num1, num2) {
 
 const display = document.querySelector(".display");
 
+function clearAll() {
+  firstNumber = 0;
+  secondNumber = 0;
+  operator = "";
+  display.textContent = "0";
+}
+
 const keyList = document.querySelectorAll(".number");
 const operatorList = document.querySelectorAll(".operator");
 
@@ -80,3 +87,6 @@ equal.addEventListener("click", () => {
 
   display.textContent = operate(operator, firstNumber, secondNumber);
 });
+
+const clearButton = document.querySelector(".clear button");
+clearButton.addEventListener("click", clearAll);
