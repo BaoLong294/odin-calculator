@@ -26,7 +26,7 @@ function operate(op, num1, num2) {
   } else if (op === "*") {
     return multiply(num1, num2);
   } else if (op === "/") {
-    if (!num2) {
+    if (num2 === 0) {
       return "Cannot divide by zero";
     }
 
@@ -50,6 +50,8 @@ const operatorList = document.querySelectorAll(".operator");
 
 keyList.forEach((numberButton) => {
   numberButton.addEventListener("click", (e) => {
+    if (display.textContent === "Cannot divide by zero") return;
+
     if (display.textContent.trim() === "0") {
       display.textContent = "";
     }
@@ -64,11 +66,18 @@ keyList.forEach((numberButton) => {
 
 operatorList.forEach((operatorButton) => {
   operatorButton.addEventListener("click", (e) => {
+    if (display.textContent === "Cannot divide by zero") return;
+
     const anotherOperator = e.target.textContent;
 
     if (operator && display.textContent.trim() !== "") {
       secondNumber = Number(display.textContent);
       display.textContent = operate(operator, firstNumber, secondNumber);
+
+      if (display.textContent === "Cannot divide by zero") {
+        operator = "";
+        return;
+      }
 
       firstNumber = Number(display.textContent);
       secondNumber = 0;
@@ -83,8 +92,9 @@ operatorList.forEach((operatorButton) => {
 
 const equal = document.querySelector(".equal");
 equal.addEventListener("click", () => {
-  secondNumber = Number(display.textContent);
+  if (display.textContent === "Cannot divide by zero") return;
 
+  secondNumber = Number(display.textContent);
   display.textContent = operate(operator, firstNumber, secondNumber);
 });
 
