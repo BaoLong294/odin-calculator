@@ -1,3 +1,7 @@
+const firstNumber = 0;
+const secondNumber = 0;
+const operator = "+";
+
 function add(a, b) {
   return a + b;
 }
@@ -14,7 +18,16 @@ function divide(a, b) {
   return a / b;
 }
 
-console.log(add(1, 2));
-console.log(subtract(1, 2));
-console.log(multiply(1, 2));
-console.log(divide(1, 2));
+function operate(op, num1, num2) {
+  if (op === "+") {
+    return add(num1, num2);
+  } else if (op === "-") {
+    return subtract(num1, num2);
+  } else if (op === "*") {
+    return multiply(num1, num2);
+  } else if (op === "/") {
+    return divide(num1, num2);
+  } else {
+    return "Invalid operator!";
+  }
+}
