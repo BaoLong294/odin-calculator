@@ -1,6 +1,6 @@
 let firstNumber = 0;
 let secondNumber = 0;
-let operator = "+";
+let operator = "";
 
 function add(a, b) {
   return a + b;
@@ -47,15 +47,30 @@ keyList.forEach((numberButton) => {
       display.textContent = "";
     }
 
+    if (Number(display.textContent) === firstNumber) {
+      display.textContent = "";
+    }
+
     display.textContent += e.target.textContent;
   });
 });
 
 operatorList.forEach((operatorButton) => {
   operatorButton.addEventListener("click", (e) => {
-    operator = e.target.textContent;
-    firstNumber = Number(display.textContent);
-    display.textContent = "";
+    const anotherOperator = e.target.textContent;
+
+    if (firstNumber && operator) {
+      secondNumber = Number(display.textContent);
+      display.textContent = operate(operator, firstNumber, secondNumber);
+
+      firstNumber = Number(display.textContent);
+      secondNumber = 0;
+      operator = anotherOperator;
+    } else {
+      operator = anotherOperator;
+      firstNumber = Number(display.textContent);
+      display.textContent = "";
+    }
   });
 });
 
