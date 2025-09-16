@@ -31,3 +31,16 @@ function operate(op, num1, num2) {
     return "Invalid operator!";
   }
 }
+
+const display = document.querySelector(".display");
+
+const keyList = document.querySelectorAll(".number");
+keyList.forEach((numberButton) => {
+  numberButton.addEventListener("click", (e) => {
+    if (display.textContent.trim() === "0") {
+      display.textContent = "";
+    }
+
+    display.textContent += e.target.textContent;
+  });
+});
