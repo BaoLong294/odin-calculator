@@ -74,6 +74,25 @@ keyList.forEach((numberButton) => {
   });
 });
 
+const decimal = document.querySelector(".decimal");
+decimal.addEventListener("click", (e) => {
+  if (display.textContent === "Cannot divide by zero") return;
+  if (display.textContent.includes(".")) return;
+
+  if (justEvaluated && operator !== "") {
+    clearAll;
+    display.textContent = "0.";
+    return;
+  }
+
+  if (display.textContent.trim() === "") {
+    display.textContent = "0.";
+    return;
+  }
+
+  display.textContent += ".";
+});
+
 operatorList.forEach((operatorButton) => {
   operatorButton.addEventListener("click", (e) => {
     if (display.textContent === "Cannot divide by zero") return;
