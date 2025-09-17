@@ -47,6 +47,12 @@ function clearAll() {
   display.textContent = "0";
 }
 
+function roundTo(num, digit = 5) {
+  return typeof num === "number"
+    ? Math.round(num * 10 ** digit) / 10 ** digit
+    : num;
+}
+
 const keyList = document.querySelectorAll(".number");
 const operatorList = document.querySelectorAll(".operator");
 
@@ -101,7 +107,15 @@ operatorList.forEach((operatorButton) => {
 
     if (!justEvaluated && operator && display.textContent.trim() !== "") {
       secondNumber = Number(display.textContent);
-      display.textContent = operate(operator, firstNumber, secondNumber);
+
+      const result = operate(operator, firstNumber, secondNumber);
+      if (result === "Cannot divide by zero") {
+        display.textContent = result;
+        operator = "";
+        return;
+      }
+
+      display.textContent = roundTo(result);
 
       if (display.textContent === "Cannot divide by zero") {
         operator = "";
@@ -127,7 +141,16 @@ equal.addEventListener("click", () => {
   if (display.textContent.trim() === "") return;
 
   secondNumber = Number(display.textContent);
-  display.textContent = operate(operator, firstNumber, secondNumber);
+
+  const result = operate(operator, firstNumber, secondNumber);
+  if (result === "Cannot divide by zero") {
+    display.textContent = result;
+    operator = "";
+    justEvaluated = true;
+    return;
+  }
+
+  display.textContent = roundTo(result);
 
   justEvaluated = true;
   console.log(justEvaluated);
