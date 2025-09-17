@@ -1,6 +1,7 @@
 let firstNumber = 0;
 let secondNumber = 0;
 let operator = "";
+let justEvaluated = false;
 
 function add(a, b) {
   return a + b;
@@ -42,6 +43,7 @@ function clearAll() {
   firstNumber = 0;
   secondNumber = 0;
   operator = "";
+  justEvaluated = false;
   display.textContent = "0";
 }
 
@@ -51,6 +53,14 @@ const operatorList = document.querySelectorAll(".operator");
 keyList.forEach((numberButton) => {
   numberButton.addEventListener("click", (e) => {
     if (display.textContent === "Cannot divide by zero") return;
+
+    if (justEvaluated) {
+      firstNumber = 0;
+      secondNumber = 0;
+      operator = "";
+      display.textContent = "";
+      justEvaluated = false;
+    }
 
     if (display.textContent.trim() === "0") {
       display.textContent = "";
@@ -70,7 +80,7 @@ operatorList.forEach((operatorButton) => {
 
     const anotherOperator = e.target.textContent;
 
-    if (operator && display.textContent.trim() !== "") {
+    if (!justEvaluated && operator && display.textContent.trim() !== "") {
       secondNumber = Number(display.textContent);
       display.textContent = operate(operator, firstNumber, secondNumber);
 
@@ -84,8 +94,9 @@ operatorList.forEach((operatorButton) => {
       operator = anotherOperator;
     } else {
       operator = anotherOperator;
-      firstNumber = Number(display.textContent);
+      firstNumber = Number(display.textContent || 0);
       display.textContent = "";
+      justEvaluated = false;
     }
   });
 });
@@ -93,10 +104,17 @@ operatorList.forEach((operatorButton) => {
 const equal = document.querySelector(".equal");
 equal.addEventListener("click", () => {
   if (display.textContent === "Cannot divide by zero") return;
+  if (!operator) return;
+  if (display.textContent.trim() === "") return;
 
   secondNumber = Number(display.textContent);
   display.textContent = operate(operator, firstNumber, secondNumber);
+
+  justEvaluated = true;
+  console.log(justEvaluated);
 });
 
 const clearButton = document.querySelector(".clear button");
 clearButton.addEventListener("click", clearAll);
+
+console.log(justEvaluated);
