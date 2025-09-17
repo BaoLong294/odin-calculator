@@ -1,5 +1,6 @@
 let firstNumber = 0;
 let secondNumber = 0;
+let lastSecondNumber = null;
 let operator = "";
 let justEvaluated = false;
 
@@ -42,6 +43,7 @@ const display = document.querySelector(".display");
 function clearAll() {
   firstNumber = 0;
   secondNumber = 0;
+  lastSecondNumber = null;
   operator = "";
   justEvaluated = false;
   display.textContent = "0";
@@ -86,7 +88,7 @@ decimal.addEventListener("click", (e) => {
   if (display.textContent.includes(".")) return;
 
   if (justEvaluated && operator !== "") {
-    clearAll;
+    clearAll();
     display.textContent = "0.";
     return;
   }
@@ -107,8 +109,8 @@ operatorList.forEach((operatorButton) => {
 
     if (!justEvaluated && operator && display.textContent.trim() !== "") {
       secondNumber = Number(display.textContent);
-
       const result = operate(operator, firstNumber, secondNumber);
+
       if (result === "Cannot divide by zero") {
         display.textContent = result;
         operator = "";
@@ -116,12 +118,6 @@ operatorList.forEach((operatorButton) => {
       }
 
       display.textContent = roundTo(result);
-
-      if (display.textContent === "Cannot divide by zero") {
-        operator = "";
-        return;
-      }
-
       firstNumber = Number(display.textContent);
       secondNumber = 0;
       operator = anotherOperator;
@@ -138,11 +134,18 @@ const equal = document.querySelector(".equal");
 equal.addEventListener("click", () => {
   if (display.textContent === "Cannot divide by zero") return;
   if (!operator) return;
-  if (display.textContent.trim() === "") return;
 
-  secondNumber = Number(display.textContent);
+  if (justEvaluated) {
+    firstNumber = Number(display.textContent);
+    secondNumber = lastSecondNumber;
+  } else {
+    if (display.textContent.trim() === "") return;
+    secondNumber = Number(display.textContent);
+    lastSecondNumber = secondNumber;
+  }
 
   const result = operate(operator, firstNumber, secondNumber);
+
   if (result === "Cannot divide by zero") {
     display.textContent = result;
     operator = "";
@@ -151,12 +154,9 @@ equal.addEventListener("click", () => {
   }
 
   display.textContent = roundTo(result);
-
   justEvaluated = true;
   console.log(justEvaluated);
 });
 
 const clearButton = document.querySelector(".clear button");
 clearButton.addEventListener("click", clearAll);
-
-console.log(justEvaluated);
